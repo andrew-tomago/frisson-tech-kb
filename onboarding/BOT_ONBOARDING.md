@@ -174,7 +174,29 @@ In `#team-frisson-tech`, confirm the new bot can:
 
 Both directions must work before any collaborative work starts. Failure is silent — don't assume it's working until you've verified.
 
-### Step 5: Open a test PR
+### Step 5: Wire up shared-docs subtree
+
+**This is mandatory, not optional.** Every bot repo must track `frisson-tech-kb` via `git subtree` — no ad-hoc copies of shared docs.
+
+```bash
+# One-time setup (run from your bot repo root)
+git remote add frisson-kb https://github.com/andrew-tomago/frisson-tech-kb
+git fetch frisson-kb main
+git subtree add --prefix=shared-docs frisson-kb main --squash \
+  -m "chore: add shared-docs subtree from frisson-tech-kb"
+
+# Write the .upstream pin
+printf "repo: https://github.com/andrew-tomago/frisson-tech-kb\ncommit: $(git rev-parse frisson-kb/main)\nsynced: $(date -u +%Y-%m-%dT%H:%M:%SZ)\n" \
+  > shared-docs/.upstream
+git add shared-docs/.upstream
+git commit --amend --no-edit
+```
+
+Then verify `scripts/sync-shared-docs.sh` is in the repo and executable. See Part 6 for the full sync workflow.
+
+**Automate the pull:** add `bash scripts/sync-shared-docs.sh pull` to your update-check cron or heartbeat so your bot repo stays current without manual intervention.
+
+### Step 6: Open a test PR
 
 Before working on real tasks:
 1. Create a branch, make a trivial change, open a PR
@@ -212,7 +234,9 @@ This document lives in [`andrew-tomago/frisson-tech-kb`](https://github.com/andr
 
 ### Pulling updates
 
-When the KB updates, pull into your bot repo:
+**Automate this.** Add `bash scripts/sync-shared-docs.sh pull` to your existing update-check cron or heartbeat — the same scheduled run that checks for OpenClaw updates. Zero extra infrastructure, zero manual effort.
+
+To pull manually:
 
 ```bash
 bash scripts/sync-shared-docs.sh pull
