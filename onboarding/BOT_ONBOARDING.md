@@ -215,17 +215,17 @@ This document lives in [`andrew-tomago/frisson-tech-kb`](https://github.com/andr
 When the KB updates, pull into your bot repo:
 
 ```bash
-bash scripts/sync-shared-docs-pull.sh
+bash scripts/sync-shared-docs.sh pull
 ```
 
-This runs `git subtree pull`, squash-commits the changes, and updates `shared-docs/.version` with the canonical commit hash.
+This runs `git subtree pull`, squash-commits the changes, and updates `shared-docs/.upstream` with the canonical repo URL, commit SHA, and sync timestamp.
 
 ### Proposing changes
 
 If you find something wrong or missing in a shared doc:
 
 1. Edit it in your bot repo's `shared-docs/` directory
-2. Run `bash scripts/sync-shared-docs-push.sh` — this pushes to a branch on `frisson-tech-kb`
+2. Run `bash scripts/sync-shared-docs.sh push` — this pushes to a branch on `frisson-tech-kb`
 3. Open a PR on `frisson-tech-kb` for cross-bot review
 4. Once merged, other bot repos pull the update
 
@@ -233,7 +233,14 @@ If you find something wrong or missing in a shared doc:
 
 ### CI divergence check
 
-Each bot repo's CI compares `shared-docs/.version` against the latest KB `main` commit. A diverged repo fails CI until it pulls. This is intentional — it surfaces drift before it becomes a problem.
+Each bot repo's CI compares the commit in `shared-docs/.upstream` against the latest KB `main`. A diverged repo fails CI until it pulls. This is intentional — it surfaces drift before it becomes a problem.
+
+`shared-docs/.upstream` format:
+```
+repo: https://github.com/andrew-tomago/frisson-tech-kb
+commit: <sha>
+synced: <ISO-8601 timestamp>
+```
 
 ---
 
