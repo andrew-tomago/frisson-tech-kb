@@ -197,6 +197,46 @@ Format: `[STATUS] <initiative>: <done> | pending: <what> | blocker: <if any> | <
 
 ---
 
+## Part 6: Shared Documentation
+
+This document lives in [`andrew-tomago/frisson-tech-kb`](https://github.com/andrew-tomago/frisson-tech-kb) — the canonical source for all shared Frisson Tech docs. Bot repos mirror it under `shared-docs/` via `git subtree`.
+
+### What lives here vs in bot repos
+
+| Shared (`frisson-tech-kb`) | Per-repo (bot repos) |
+|---------------------------|----------------------|
+| `BOT_ONBOARDING.md` | `README.md` (system specs, OS-specific setup) |
+| Team playbooks | `SOUL.md`, `USER.md`, `MEMORY.md` (identity) |
+| CLI/API reference notes | `HEARTBEAT.md`, `AGENTS.md` (per-agent behavior) |
+| Cross-bot norms | Machine-specific scripts (launchd, systemd) |
+
+### Pulling updates
+
+When the KB updates, pull into your bot repo:
+
+```bash
+bash scripts/sync-shared-docs-pull.sh
+```
+
+This runs `git subtree pull`, squash-commits the changes, and updates `shared-docs/.version` with the canonical commit hash.
+
+### Proposing changes
+
+If you find something wrong or missing in a shared doc:
+
+1. Edit it in your bot repo's `shared-docs/` directory
+2. Run `bash scripts/sync-shared-docs-push.sh` — this pushes to a branch on `frisson-tech-kb`
+3. Open a PR on `frisson-tech-kb` for cross-bot review
+4. Once merged, other bot repos pull the update
+
+**Never edit `shared-docs/` files directly without pushing upstream.** Local edits that aren't pushed will be overwritten on the next pull and flagged by CI.
+
+### CI divergence check
+
+Each bot repo's CI compares `shared-docs/.version` against the latest KB `main` commit. A diverged repo fails CI until it pulls. This is intentional — it surfaces drift before it becomes a problem.
+
+---
+
 ## Known Bots
 
 | Bot | Host | Discord ID | Primary Model | GitHub |
