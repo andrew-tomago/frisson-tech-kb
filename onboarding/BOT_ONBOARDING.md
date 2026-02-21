@@ -279,3 +279,4 @@ synced: <ISO-8601 timestamp>
 |-----|------|-----------|---------------|--------|
 | Felicity | macOS (frenetic-feline, Intel i5) | `1473820786908463287` | claude-sonnet-4-6 | andrew-tomago (shared) |
 | Felix | Ubuntu (Ryzen 7 3700X) | `1473650421171093544` | gpt-5.3-codex | andrew-tomago (shared) |
+| Tammy | macOS (MacBookPro18,4, M1 Max) | `1474609005593890900` | — | andrew-tomago (shared) |
