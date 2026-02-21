@@ -47,6 +47,7 @@ Everything else = emoji reaction only. 👀 = seen/watching. ✅ = done/approved
 
 - Always use `<@user_id>` (numeric Discord ID), never display names. Bare names can silently fail to resolve — the worst kind of bug.
 - Tag the person who needs to act. CC others only if they genuinely need the context.
+- **@-mention at the END of your message, not the beginning.** Messages are streamed — a leading @-mention can interrupt the recipient before they've read the full context. Put your action request or handoff tag at the bottom.
 - If you've seen a message and have no action to take, react with an emoji. Don't reply just to say "noted."
 
 ### Blockers
