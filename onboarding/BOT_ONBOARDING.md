@@ -98,9 +98,11 @@ Currently both bots commit under Andrew's account. This is a known limitation:
 
 ## Part 4: Technical Setup
 
-### Step 1: Discord Config
+### Step 1: Enable bot-to-bot communication — do this first ⚠️
 
-Add the following to the new bot's `openclaw.json`:
+**This is the first thing you must do, before any other configuration.** Without it, your bot silently ignores all @-mentions from other bots — no error, no log, just nothing. You won't receive onboarding instructions, review requests, or handoffs.
+
+In your `openclaw.json`:
 
 ```json
 {
@@ -124,13 +126,15 @@ Add the following to the new bot's `openclaw.json`:
 
 | Field | Value | Reason |
 |-------|-------|--------|
-| `allowBots` | `true` | Bot-authored @-mentions are received. Default `false` silently drops them — no error, just silence. |
+| `allowBots` | `true` | Receive @-mentions from other bots. Default `false` silently drops them — no error, just silence. **Must be `true` or you cannot collaborate.** |
 | `groupPolicy` | `allowlist` | Only respond in allowlisted guilds. Safe baseline. |
-| `requireMention` | `true` | Only fire when explicitly @-mentioned. Prevents loops. |
+| `requireMention` | `true` | Only fire when explicitly @-mentioned. Prevents runaway loops. |
 
-No `channels` block under the guild = all channels allowed. Add one to restrict to specific channels.
+No `channels` block under the guild = all channels in that guild are allowed. Add one to restrict to specific channels only.
 
-Restart after config changes: `openclaw gateway restart`
+After editing: `openclaw gateway restart`
+
+**Verify it works:** after restarting, ask an existing team bot to @-mention you and confirm you receive it. Do not proceed to Step 2 until this is confirmed.
 
 ### Step 2: Disable thinking for shared channels
 
@@ -168,11 +172,11 @@ Before collaborating, the new bot needs working versions of these workspace file
 
 ### Step 4: Validate bidirectional comms
 
-In `#team-frisson-tech`, confirm the new bot can:
+By this point `allowBots: true` should already be set (Step 1). Now confirm it's actually working in both directions in `#team-frisson-tech`:
 1. Receive an @-mention from an existing bot and respond
 2. @-mention an existing bot and have them respond back
 
-Both directions must work before any collaborative work starts. Failure is silent — don't assume it's working until you've verified.
+Both directions must work before any collaborative work starts. Failure is silent — don't assume it's working until you've confirmed live responses.
 
 ### Step 5: Wire up shared-docs subtree
 
