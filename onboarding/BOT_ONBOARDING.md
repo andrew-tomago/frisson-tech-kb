@@ -135,7 +135,11 @@ No `channels` block under the guild = all channels in that guild are allowed. Ad
 
 After editing: `openclaw gateway restart`
 
-**Verify it works:** after restarting, ask an existing team bot to @-mention you and confirm you receive it. Do not proceed to Step 2 until this is confirmed.
+**✅ DoD — Step 1 complete when:**
+- `allowBots: true` and `requireMention: true` set in `openclaw.json`
+- Gateway restarted
+- Existing bot @-mentions you and you respond (confirmed live in `#team-frisson-tech`)
+- **Notify:** tag your onboarding guide in `#team-frisson-tech` before proceeding
 
 ### Step 2: Disable thinking for shared channels
 
@@ -160,6 +164,11 @@ Set this in `openclaw.json`:
 
 Thinking can still be enabled per-session via `/reasoning` in private DM sessions where it's useful.
 
+**✅ DoD — Step 2 complete when:**
+- `agents.defaults.thinkingDefault: "off"` in `openclaw.json`
+- Gateway restarted
+- **Notify:** tag your onboarding guide in `#team-frisson-tech`
+
 ### Step 3: Establish identity
 
 Before collaborating, the new bot needs working versions of these workspace files:
@@ -171,6 +180,12 @@ Before collaborating, the new bot needs working versions of these workspace file
 - **`MEMORY.md`** — seeded with team structure and key decisions
 - **`HEARTBEAT.md`** — configured for specific periodic tasks
 
+**✅ DoD — Step 3 complete when:**
+- All six files exist in workspace root: `SOUL.md`, `USER.md`, `AGENTS.md`, `TOOLS.md`, `MEMORY.md`, `HEARTBEAT.md`
+- `SOUL.md` reflects your actual voice (not a template — read it and it should sound like you)
+- `MEMORY.md` seeded with team structure + Andrew's profile
+- **Notify:** tag your onboarding guide with a brief summary of your identity
+
 ### Step 4: Validate bidirectional comms
 
 By this point `allowBots: true` should already be set (Step 1). Now confirm it's actually working in both directions in `#team-frisson-tech`:
@@ -178,6 +193,11 @@ By this point `allowBots: true` should already be set (Step 1). Now confirm it's
 2. @-mention an existing bot and have them respond back
 
 Both directions must work before any collaborative work starts. Failure is silent — don't assume it's working until you've confirmed live responses.
+
+**✅ DoD — Step 4 complete when:**
+- You have received an @-mention from an existing bot and replied
+- You have @-mentioned an existing bot and received a reply
+- Both confirmed live in `#team-frisson-tech` (not assumed)
 
 ### Step 5: Wire up shared-docs subtree
 
@@ -201,14 +221,28 @@ Then verify `scripts/sync-shared-docs.sh` is in the repo and executable. See Par
 
 **Automate the pull:** add `bash scripts/sync-shared-docs.sh pull` to your update-check cron or heartbeat so your bot repo stays current without manual intervention.
 
+**✅ DoD — Step 5 complete when:**
+- `frisson-kb` remote added and `shared-docs/` subtree present in repo
+- `shared-docs/.upstream` exists with correct repo URL, commit SHA, and sync timestamp
+- `scripts/sync-shared-docs.sh` is present and executable (`chmod +x`)
+- `bash scripts/sync-shared-docs.sh pull` runs without error
+- `shared-docs/onboarding/BOT_ONBOARDING.md` is readable (i.e., you've read this doc)
+- **Notify:** tag your onboarding guide
+
 ### Step 6: Open a test PR
 
 Before working on real tasks:
-1. Create a branch, make a trivial change, open a PR
-2. Have an existing team bot review and approve it
-3. Merge
+1. On a branch, add `scripts/check-openclaw-update.sh` (use Felicity's as reference: <https://github.com/andrew-tomago/felicity-macos-claw/blob/main/scripts/update-check.sh>)
+2. Open a PR and tag an existing bot for review
+3. Address feedback, get approval, merge
 
-This validates the full workflow (git credentials, GitHub access, review loop) before it matters.
+This validates git credentials, GitHub access, the review loop, and delivers your first real artifact.
+
+**✅ DoD — Step 6 complete when:**
+- `scripts/check-openclaw-update.sh` exists, is executable, and uses `availability.*` field detection (not version strings)
+- Script calls `bash scripts/sync-shared-docs.sh pull` (best-effort, non-blocking)
+- PR opened, reviewed by an existing bot, and merged
+- **Notify:** tag Andrew (`<@162450483611435008>`) — onboarding complete, ready for first real task
 
 ---
 
